@@ -9,10 +9,17 @@ import ContinueLearning from '@/component/continueLenring/continueLenring';
 import Recommended from '@/component/recommended/recommended';
 import ProgressFeatures from '@/component/progessFeatures/progessFeatures';
 import Achievement from '@/component/archivement/archivement';
+import Loader from '@/component/loader/loader';
 
 const Main = () => {
-  const [dark, setDark] = useState(false);
+  const [dark, setDark] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  // Show loader for 5 seconds on first load
+  if (loading) {
+    return <Loader onDone={() => setLoading(false)} />;
+  }
 
   return (
     <div
@@ -27,7 +34,7 @@ const Main = () => {
         />
       )}
 
-      {/* Sidebar — hidden on mobile, slide in on toggle */}
+      {/* Sidebar */}
       <div
         className={`fixed lg:static inset-y-0 left-0 z-40 transition-transform duration-300
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
@@ -37,14 +44,12 @@ const Main = () => {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0">
-        {/* Top Search Bar */}
         <SearchBar
           dark={dark}
           onToggleDark={() => setDark((d) => !d)}
           onMenuClick={() => setSidebarOpen(true)}
         />
 
-        {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto p-3 sm:p-4 lg:p-5 flex flex-col xl:flex-row gap-4 lg:gap-5">
 
           {/* Center Column */}
@@ -55,7 +60,7 @@ const Main = () => {
             <Recommended dark={dark} />
           </div>
 
-          {/* Right Column — full width on mobile, fixed width on xl */}
+          {/* Right Column */}
           <div className="w-full xl:w-64 xl:shrink-0 flex flex-col gap-4">
             <div className="grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-1 gap-4">
               <DailyGoal dark={dark} />
