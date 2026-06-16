@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState ,useEffect } from 'react';
 import Sidebar from '@/component/sidebar/sidebar';
 import SearchBar from '@/component/searchBar/searchBar';
 import Banner from '@/component/banner/banner';
@@ -10,11 +10,54 @@ import Recommended from '@/component/recommended/recommended';
 import ProgressFeatures from '@/component/progessFeatures/progessFeatures';
 import Achievement from '@/component/archivement/archivement';
 import Loader from '@/component/loader/loader';
+import axios from "axios";
 
 const Main = () => {
   const [dark, setDark] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+
+
+  const createUser = async () => {
+  try {
+    const res = await axios.post(
+      "http://localhost:5000/api/users",
+      {
+        name: "vivek saini",
+        email: "vivek@gmail.com",
+      }
+    );
+
+    console.log(res.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+  const getUsers = async () => {
+  try {
+    const res = await axios.get("http://localhost:5000/api/users");
+
+    console.log(res.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const deleteUser = async (id) => {
+  try {
+    const res = await axios.delete(
+      `http://localhost:5000/api/users/${id}`
+    );
+
+    console.log(res.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+useEffect(()=>{
+  // deleteUser('6a171440322420bb1523c051');
+},[])
 
   // Show loader for 5 seconds on first load
   if (loading) {
