@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 
 const navItems = [
-  { icon: LayoutDashboard, label: 'Dashboard', active: true },
+  { icon: LayoutDashboard, label: 'Dashboard' },
   { icon: HelpCircle,      label: 'Questions' },
   { icon: FileText,        label: 'Notes' },
   { icon: Dumbbell,        label: 'Practice', badge: 'New' },
@@ -18,38 +18,42 @@ const navItems = [
   { icon: Settings,        label: 'Settings' },
 ];
 
-const Sidebar = ({ dark, onClose }) => {
+const Sidebar = ({ dark, onClose, activePage = 'Dashboard', onNavigate }) => {
   return (
     <aside
-      className={`w-52 h-screen flex flex-col justify-between py-4 border-r shrink-0 transition-colors duration-300
+      className={`w-52 h-screen flex flex-col border-r shrink-0 transition-colors duration-300
         ${dark ? 'bg-[#0a0820] border-indigo-900' : 'bg-white border-gray-100'}`}
     >
-      {/* Logo + close button (mobile) */}
-      <div>
-        <div className="flex items-center justify-between px-4 mb-6">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center shrink-0">
-              <span className="text-white font-bold text-sm">R</span>
-            </div>
-            <span className="font-bold text-blue-500 text-lg">ReactPrep</span>
+      {/* ── Logo (fixed top) ── */}
+      <div className="flex items-center justify-between px-4 py-4 shrink-0">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center shrink-0">
+            <span className="text-white font-bold text-sm">R</span>
           </div>
-          {/* Close only on mobile */}
-          <button
-            onClick={onClose}
-            className={`lg:hidden p-1 rounded-lg cursor-pointer transition-colors
-              ${dark ? 'text-indigo-300 hover:bg-indigo-900/50' : 'text-gray-500 hover:bg-gray-100'}`}
-          >
-            <X size={18} />
-          </button>
+          <span className="font-bold text-blue-500 text-lg">ReactPrep</span>
         </div>
+        {/* Close — mobile only */}
+        <button
+          onClick={onClose}
+          className={`lg:hidden p-1 rounded-lg cursor-pointer transition-colors
+            ${dark ? 'text-indigo-300 hover:bg-indigo-900/50' : 'text-gray-500 hover:bg-gray-100'}`}
+        >
+          <X size={18} />
+        </button>
+      </div>
 
-        {/* Nav Items */}
-        <nav className="flex flex-col gap-0.5 px-2">
-          {navItems.map(({ icon: Icon, label, active, badge }) => (
+      {/* ── Nav (scrollable middle) ── */}
+      <nav className="flex-1 overflow-y-auto px-2 py-1 flex flex-col gap-0.5
+        scrollbar-thin scrollbar-thumb-indigo-800 scrollbar-track-transparent">
+        {navItems.map(({ icon: Icon, label, badge }) => {
+          const isActive = activePage === label;
+          return (
             <button
               key={label}
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors w-full text-left cursor-pointer
-                ${active
+              onClick={() => onNavigate && onNavigate(label)}
+              className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium
+                transition-colors w-full text-left cursor-pointer
+                ${isActive
                   ? 'bg-blue-600 text-white'
                   : dark
                     ? 'text-indigo-300 hover:bg-indigo-900/50'
@@ -64,12 +68,12 @@ const Sidebar = ({ dark, onClose }) => {
                 </span>
               )}
             </button>
-          ))}
-        </nav>
-      </div>
+          );
+        })}
+      </nav>
 
-      {/* Upgrade to Pro */}
-      <div className="mx-3 mt-4">
+      {/* ── Upgrade + User (fixed bottom) ── */}
+      <div className="mx-3 pb-4 pt-3 shrink-0">
         <div className="bg-gradient-to-b from-indigo-900 to-purple-900 rounded-xl p-3 text-white text-center">
           <div className="flex justify-center mb-2">
             <Rocket size={26} className="text-yellow-300" />

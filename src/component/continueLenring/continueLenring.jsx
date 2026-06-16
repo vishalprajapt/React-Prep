@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 
-const ContinueLearning = ({ dark }) => {
+const ContinueLearning = ({ dark, onGoToNotes }) => {
   return (
     <div>
       <h2 className={`text-base font-bold mb-3 ${dark ? 'text-white' : 'text-gray-800'}`}>
@@ -46,7 +46,10 @@ const ContinueLearning = ({ dark }) => {
           <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl flex items-center justify-center bg-indigo-800/60">
             <span className="text-3xl sm:text-4xl">👨‍💻</span>
           </div>
-          <button className="bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold px-4 sm:px-5 py-2.5 rounded-lg flex items-center gap-2 transition-colors shadow-lg shadow-blue-500/30 cursor-pointer whitespace-nowrap">
+          <button
+            onClick={onGoToNotes}
+            className="bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold px-4 sm:px-5 py-2.5 rounded-lg flex items-center gap-2 transition-colors shadow-lg shadow-blue-500/30 cursor-pointer whitespace-nowrap"
+          >
             Continue <ArrowRight size={15} />
           </button>
         </div>
