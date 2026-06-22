@@ -1,70 +1,53 @@
 'use client';
-import React, { useState, useEffect } from 'react';
-import Sidebar        from '@/component/sidebar/sidebar';
-import SearchBar      from '@/component/searchBar/searchBar';
-import Banner         from '@/component/banner/banner';
-import Dashboard      from '@/component/dashboard/dashboard';
-import DailyGoal      from '@/component/dashboard/dailyGoal';
+import { useState, useEffect } from 'react';
+import Sidebar          from '@/component/sidebar/sidebar';
+import SearchBar        from '@/component/searchBar/searchBar';
+import Banner           from '@/component/banner/banner';
+import Dashboard        from '@/component/dashboard/dashboard';
+import DailyGoal        from '@/component/dashboard/dailyGoal';
 import ContinueLearning from '@/component/continueLenring/continueLenring';
-import Recommended    from '@/component/recommended/recommended';
+import Recommended      from '@/component/recommended/recommended';
 import ProgressFeatures from '@/component/progessFeatures/progessFeatures';
-import Achievement    from '@/component/archivement/archivement';
-import Loader         from '@/component/loader/loader';
-import NotesPage      from '@/component/notes/index';
-import QuestionsPage  from '@/component/questions/index';
-import TopicsPage     from '@/component/topics/index';
-import axios from 'axios';
+import Achievement      from '@/component/archivement/archivement';
+import Loader           from '@/component/loader/loader';
+import NotesPage        from '@/component/notes/index';
+import QuestionsPage    from '@/component/questions/index';
+import TopicsPage       from '@/component/topics/index';
+import AuthPage         from '@/component/auth/AuthPage';
+import { isLoggedIn }   from '@/utils/loginUserData';
 
 const Main = () => {
-  const [dark, setDark]           = useState(true);
+  const [dark, setDark]             = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [loading, setLoading]     = useState(true);
+  const [loading, setLoading]       = useState(true);
   const [activePage, setActivePage] = useState('Dashboard');
+  const [authed, setAuthed]         = useState(false);
+
+  // Check localStorage on first render (after loader)
+  useEffect(() => {
+    if (!loading) {
+      setAuthed(isLoggedIn());
+    }
+  }, [loading]);
 
   const navigate = (page) => {
     setActivePage(page);
     setSidebarOpen(false);
   };
 
-  // ── API helpers (unchanged) ──────────────────────────────
-  const createUser = async () => {
-    try {
-      const res = await axios.post('http://localhost:5000/api/users', {
-        name: 'vivek saini',
-        email: 'vivek@gmail.com',
-      });
-      console.log(res.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getUsers = async () => {
-    try {
-      const res = await axios.get('http://localhost:5000/api/users');
-      console.log(res.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const deleteUser = async (id) => {
-    try {
-      const res = await axios.delete(`http://localhost:5000/api/users/${id}`);
-      console.log(res.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    // deleteUser('6a171440322420bb1523c051');
-  }, []);
-  // ────────────────────────────────────────────────────────
-
+  // ── 1. Show loader first ─────────────────────────────────
   if (loading) return <Loader onDone={() => setLoading(false)} />;
 
-  // ── Page renderer ────────────────────────────────────────
+  // ── 2. Not logged in → show Auth page ───────────────────
+  if (!authed) {
+    return (
+      <AuthPage
+        onLoginSuccess={() => setAuthed(true)}
+      />
+    );
+  }
+
+  // ── 3. Logged in → show dashboard ───────────────────────
   const renderPage = () => {
     switch (activePage) {
       case 'Notes':     return <NotesPage     dark={dark} />;
@@ -98,7 +81,7 @@ const Main = () => {
       className={`flex h-screen overflow-hidden font-sans transition-colors duration-300
         ${dark ? 'bg-[#07051a]' : 'bg-gray-50'}`}
     >
-      {/* ── Mobile overlay ── */}
+      {/* Mobile overlay */}
       {sidebarOpen && (
         <div
           className="fixed inset-0 bg-black/50 z-30 lg:hidden"
@@ -106,7 +89,7 @@ const Main = () => {
         />
       )}
 
-      {/* ── Sidebar — fixed on mobile, sticky on desktop ── */}
+      {/* Sidebar */}
       <div
         className={`fixed lg:sticky lg:top-0 inset-y-0 left-0 z-40 h-screen
           transition-transform duration-300 shrink-0
@@ -117,19 +100,17 @@ const Main = () => {
           onClose={() => setSidebarOpen(false)}
           activePage={activePage}
           onNavigate={navigate}
+          onLogout={() => setAuthed(false)}
         />
       </div>
 
-      {/* ── Main area (header + scrollable content) ── */}
+      {/* Main area */}
       <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
-        {/* Header — always visible */}
         <SearchBar
           dark={dark}
           onToggleDark={() => setDark((d) => !d)}
           onMenuClick={() => setSidebarOpen(true)}
         />
-
-        {/* Scrollable page content */}
         <div className="flex-1 overflow-y-auto">
           {renderPage()}
         </div>
