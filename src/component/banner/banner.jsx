@@ -1,7 +1,9 @@
 'use client';
 import React from 'react';
+import { useRouter } from 'next/navigation';
 
 const Banner = ({ dark }) => {
+  const router = useRouter();
   return (
     <div
       className={`relative rounded-2xl flex flex-col sm:flex-row items-center overflow-hidden
@@ -24,10 +26,13 @@ const Banner = ({ dark }) => {
           Learn, practice and become the React expert you want to be.
         </p>
         <div className="flex items-center gap-3 flex-wrap">
-          <button className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-5 py-2.5 rounded-xl flex items-center gap-2 transition-colors shadow-md shadow-blue-500/30 cursor-pointer whitespace-nowrap">
+          <button
+            onClick={() => router.push('/notes')}
+            className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-5 py-2.5 rounded-xl flex items-center gap-2 transition-colors shadow-md shadow-blue-500/30 cursor-pointer whitespace-nowrap">
             Continue Learning →
           </button>
           <button
+            onClick={() => router.push('/topics')}
             className={`text-sm font-semibold px-5 py-2.5 rounded-xl border transition-colors cursor-pointer whitespace-nowrap
               ${dark
                 ? 'border-indigo-400/40 text-indigo-200 hover:bg-indigo-800/40'

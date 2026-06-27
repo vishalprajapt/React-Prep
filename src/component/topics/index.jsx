@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import { TOPICS, TOPIC_FILTERS } from './data';
 
-export default function TopicsPage({ dark }) {
+export default function TopicsPage({ dark, onTopicSelect }) {
   const [activeFilter, setActiveFilter] = useState('All Topics');
 
   const filtered = TOPICS.filter((t) => {
@@ -58,6 +58,7 @@ export default function TopicsPage({ dark }) {
             return (
               <div
                 key={topic.id}
+                onClick={() => onTopicSelect?.(topic)}
                 className={`rounded-2xl border p-4 sm:p-5 flex flex-col gap-3 cursor-pointer
                   transition-all hover:shadow-lg active:scale-[0.99]
                   ${dark

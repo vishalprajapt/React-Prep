@@ -1,5 +1,5 @@
-import Main from "@/component/Main/main";
+import { redirect } from 'next/navigation';
 
 export default function Home() {
-  return <Main />;
+  redirect('/dashboard');
 }

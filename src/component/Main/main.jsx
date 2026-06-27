@@ -13,6 +13,7 @@ import Loader           from '@/component/loader/loader';
 import NotesPage        from '@/component/notes/index';
 import QuestionsPage    from '@/component/questions/index';
 import TopicsPage       from '@/component/topics/index';
+import TopicDetail      from '@/component/topics/TopicDetail';
 import AuthPage         from '@/component/auth/AuthPage';
 import { isLoggedIn }   from '@/utils/loginUserData';
 
@@ -22,6 +23,7 @@ const Main = () => {
   const [loading, setLoading]       = useState(true);
   const [activePage, setActivePage] = useState('Dashboard');
   const [authed, setAuthed]         = useState(false);
+  const [selectedTopic, setSelectedTopic] = useState(null);
 
   // Check localStorage on first render (after loader)
   useEffect(() => {
@@ -32,6 +34,7 @@ const Main = () => {
 
   const navigate = (page) => {
     setActivePage(page);
+    setSelectedTopic(null); // reset topic detail on nav change
     setSidebarOpen(false);
   };
 
@@ -52,7 +55,18 @@ const Main = () => {
     switch (activePage) {
       case 'Notes':     return <NotesPage     dark={dark} />;
       case 'Questions': return <QuestionsPage dark={dark} />;
-      case 'Topics':    return <TopicsPage    dark={dark} />;
+      case 'Topics':
+        return selectedTopic
+          ? <TopicDetail
+              topic={selectedTopic}
+              dark={dark}
+              onBack={() => setSelectedTopic(null)}
+              onQuestionSelect={(q) => console.log('Open question:', q)}
+            />
+          : <TopicsPage
+              dark={dark}
+              onTopicSelect={(t) => setSelectedTopic(t)}
+            />;
       default:
         return (
           <div className="flex-1 overflow-y-auto p-3 sm:p-4 lg:p-5 flex flex-col xl:flex-row gap-4 lg:gap-5">
