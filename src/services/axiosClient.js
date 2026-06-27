@@ -4,4 +4,4 @@
 
 import { createAxiosInstance } from './axiosBase';
 
-export const apiClient = createAxiosInstance(process.env.NEXT_PUBLIC_API_URL);
+export const apiClient = createAxiosInstance( "https://react-prep-backend.vercel.app" || process.env.NEXT_PUBLIC_API_URL);
