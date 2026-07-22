@@ -1,23 +1,29 @@
 // services/index.js
 // All API functions for ReactPrep.
-// Usage anywhere in the app:
-//   import { loginApi, registerApi } from '@/services';
 
 import { apiClient } from './axiosClient';
 
 // ── Auth ──────────────────────────────────────────────────────────────────────
 
-/**
- * Login
- * POST https://react-prep-backend.vercel.app/api/auth/login
- * Body: { email, password }
- */
+/** POST /api/auth/login  — Body: { email, password } */
 export const loginApi = (data) => apiClient.post('/api/auth/login', data);
 
-/**
- * Register
- * POST https://react-prep-backend.vercel.app/api/auth/ragister
- * Body: { name, email, password }
- * (spelling matches the backend route)
- */
+/** POST /api/auth/register  — Body: { name, email, password } */
 export const registerApi = (data) => apiClient.post('/api/auth/register', data);
+
+// ── Questions ─────────────────────────────────────────────────────────────────
+
+/**
+ * GET /api/questions/get_question
+ * Query params: { Type: 1, ...extra }
+ * Type: 1 → fetch questions list
+ */
+export const fetchQuestion = (data) =>
+  apiClient.post('/api/questions/get_question', data);
+
+/**
+ * GET /api/questions/get_question/:id
+ * Fetch single question detail by _id
+ */
+export const fetchQuestionById = (id) =>
+  apiClient.get(`/api/questions/get_question/${id}`);
