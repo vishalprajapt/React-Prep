@@ -8,6 +8,7 @@ const achievements = [
 ];
 
 const Achievement = ({ dark }) => {
+  console.log("dark dark",dark)
   return (
     <div className={`rounded-2xl p-5 border transition-colors duration-300
       ${dark ? 'bg-[#0f0c29] border-indigo-900/60 shadow-sm' : 'bg-white border-gray-100 shadow-sm'}`}
@@ -16,7 +17,6 @@ const Achievement = ({ dark }) => {
         <h2 className={`text-sm font-bold ${dark ? 'text-white' : 'text-gray-800'}`}>Achievements</h2>
         <button className="text-xs text-blue-500 font-medium hover:underline cursor-pointer">View all</button>
       </div>
-
       <div className="grid grid-cols-4 gap-2">
         {achievements.map(({ emoji, bg, bgDark, title, desc }) => (
           <button key={title} className="flex flex-col items-center text-center gap-1 cursor-pointer group">
@@ -30,7 +30,6 @@ const Achievement = ({ dark }) => {
           </button>
         ))}
       </div>
-
       <div className="mt-4 bg-gradient-to-r from-indigo-900 to-purple-900 rounded-xl p-4 text-white">
         <p className="text-sm font-bold mb-1">You&apos;re doing amazing! 🚀</p>
         <p className="text-xs text-indigo-200 mb-3">Keep going and achieve your goals.</p>
